@@ -1,7 +1,7 @@
-# Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
+﻿# Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Маргарита Лаевская](https://up.htmlacademy.ru/javascript/11/user/584075).
-* Наставник: `Неизвестно`.
+* Наставник: `Федотов Александр`.
 
 ---
 
