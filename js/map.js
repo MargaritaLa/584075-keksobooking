@@ -20,11 +20,15 @@
 //ссылка на пустой объект
 var objectsFragment = document.createDocumentFragment();
   // шаблон в который копируем объект DocumentFragment (явл-ся NODом)
-  var mapPinsObjectTemplate = document.querySelector('template').content.querySelector('article.map__card ');
+  var mapPopupObjectTemplate = document.querySelector('template').content.querySelector('article.map__card');
+  var mapPinsObjectTemplate = document.querySelector('template').content.querySelector('.map__pin');
   // блок перед которым будем вставлять блоки с нашими элементами
   var lookoutEl = document.querySelector('.map__filters-container');
+  // блок куда будем отрисовывать наши pin
+  var containerForPin = document.querySelector('.map__pins');
   // рабочий блок
   var blockMap = document.querySelector('.map');
+
 
 
 
@@ -35,11 +39,10 @@ var objectsFragment = document.createDocumentFragment();
 createObjectsArray(cardObjectsCount);
 blockMap.classList.remove('map--faded');
 
-   // отображаем объекты во фрагменте
-   //renderObject(cardObjectsArray);
-   //console.log(pinObjectNode);
-   //выводим все объекты перед блоком .map__filters-container
-   renderObjects(objectsFragment, cardObjectsArray);
+     //выводим все объекты перед блоком .map__filters-container
+     renderObjects(objectsFragment, cardObjectsArray);
+    //выводим все пинв в  блок .map__pins
+    renderPins(objectsFragment, cardObjectsArray);
 
 //===========================================================================================
 
@@ -49,13 +52,15 @@ blockMap.classList.remove('map--faded');
     function createObjectsArray(cardObjectsCount) {
 
      var imageObjectNumbers = getRandomNonRepeatingValue(imageStartRange, imageEndRange);
-     var objectLocationX = getRandomValue(300, 900);
-     var objectLocationY = getRandomValue(100, 500);
+
 
      objectNames = objectNames.sort(compareRandom);
      objectTypes = objectTypes.sort(compareRandom);
 
      for (var i = 0; i < cardObjectsCount; i++) {
+
+      var objectLocationX = getRandomValue(300, 900);
+      var objectLocationY = getRandomValue(100, 500);
 
       var cardObject = {
         author: {
@@ -84,7 +89,7 @@ blockMap.classList.remove('map--faded');
      console.log(cardObject);
 
    }
-   console.log('1. cardObjectsArray[0].author.avatar = ' + cardObjectsArray[0].author.avatar);
+
    return cardObjectsArray;
 
  }
@@ -100,32 +105,38 @@ blockMap.classList.remove('map--faded');
   // выводим все объекты перед блоком .map__filters-container
   function renderObjects(objectsFragment, cardObjectsArray) {
     for (var i = 0; i <= cardObjectsArray.length - 1; i++) {
-      //objectsFragment.appendChild(renderObject(cardObjectsArray[i]));
       blockMap.insertBefore(renderObject(cardObjectsArray[i]), lookoutEl);
+    }
+  }
+
+  // выводим все пины перед в блок .map__pins
+  function renderPins(objectsFragment, cardObjectsArray) {
+    for (var i = 0; i <= cardObjectsArray.length - 1; i++) {
+      containerForPin.appendChild(renderPin(cardObjectsArray[i]));
     }
   }
 
 
     // функция вывода объекта в верстку / отрисовка шаблона объекта в документ
     function renderObject(object) {
-      console.log('object.author.avatar = ' + object.author.avatar);
 
-      var pinObjectNode = mapPinsObjectTemplate.cloneNode(true);
+
+      var pinObjectNode = mapPopupObjectTemplate.cloneNode(true);
       pinObjectNode.querySelector('.popup__avatar').src = object.author.avatar;
       pinObjectNode.querySelector('h3').textContent = object.offer.title;
       pinObjectNode.querySelector('p small').textContent =  object.offer.address;
       pinObjectNode.querySelector('.popup__price').innerHTML = object.offer.price + ' &#x20bd;/ночь';
 
-// навреное можно было записать короче
-if(object.offer.type === 'flat') object.offer.type = 'квартира';
-if(object.offer.type === 'bungalo') object.offer.type = 'Бунгало';
-if(object.offer.type === 'house') object.offer.type = 'Дом';
-pinObjectNode.querySelector('h4').textContent = object.offer.type;
+
+      if(object.offer.type === 'flat') object.offer.type = 'квартира';
+      if(object.offer.type === 'bungalo') object.offer.type = 'Бунгало';
+      if(object.offer.type === 'house') object.offer.type = 'Дом';
+      pinObjectNode.querySelector('h4').textContent = object.offer.type;
 
 
-pinObjectNode.querySelector('.capacity').textContent = object.offer.rooms + ' комнаты для ' + object.offer.guests + ' гостей';
-pinObjectNode.querySelector('.stay__time').textContent = 'Заезд после ' + object.offer.checkin + ', выезд до ' + object.offer.checkout;
-pinObjectNode.querySelector('.description').textContent = object.offer.description;
+      pinObjectNode.querySelector('.capacity').textContent = object.offer.rooms + ' комнаты для ' + object.offer.guests + ' гостей';
+      pinObjectNode.querySelector('.stay__time').textContent = 'Заезд после ' + object.offer.checkin + ', выезд до ' + object.offer.checkout;
+      pinObjectNode.querySelector('.description').textContent = object.offer.description;
 
 // удаление дочерних элементов
 var el = pinObjectNode.querySelector('.popup__features');
@@ -133,7 +144,7 @@ while (el.lastChild) {
   el.removeChild(el.lastChild);
 }
 
-//console.log(object.offer.features);
+
 for(var i = 0; i < object.offer.features.length; i++) {
   var featureId = object.offer.features[i];
   var elListFeatures = document.createElement('li');
@@ -145,6 +156,24 @@ for(var i = 0; i < object.offer.features.length; i++) {
 return pinObjectNode;
 
 }
+
+    // функция вывода пина в верстку / отрисовка шаблона объекта в документ
+    function renderPin(pin) {
+
+     var pinNode = mapPinsObjectTemplate.cloneNode(true);
+
+     var marginLeft = pinNode.querySelector('img').width / 2;
+     var marginTop = pinNode.querySelector('img').height / 2;
+
+     pinNode.querySelector('img').src = pin.author.avatar;
+    // pinNode.style.left =  object.location.x + 'px;'// top: ' + object.location.y +'px;';
+    pinNode.style.left = (pin.location.x - marginLeft) + 'px';
+    pinNode.style.top = (pin.location.y - marginTop) + 'px';
+    return pinNode;
+
+  }
+
+
 
 
 
