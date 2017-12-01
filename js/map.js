@@ -20,7 +20,7 @@
 //ссылка на пустой объект
 var objectsFragment = document.createDocumentFragment();
   // шаблон в который копируем объект DocumentFragment (явл-ся NODом)
-  var mapPinsObjectTemplate = document.querySelector('template').content;
+  var mapPinsObjectTemplate = document.querySelector('template').content.querySelector('article.map__card ');
   // блок перед которым будем вставлять блоки с нашими элементами
   var lookoutEl = document.querySelector('.map__filters-container');
   // рабочий блок
@@ -113,8 +113,8 @@ blockMap.classList.remove('map--faded');
       var pinObjectNode = mapPinsObjectTemplate.cloneNode(true);
       pinObjectNode.querySelector('.popup__avatar').src = object.author.avatar;
       pinObjectNode.querySelector('h3').textContent = object.offer.title;
-      pinObjectNode.querySelector('p small').textContent =  object.offer.address; // !!!!!! непраыивильно похоже вывожу
-      pinObjectNode.querySelector('.popup__price').textContent = object.offer.price + '&#x20bd;/ночь'; // !!!!!! не отрабатывеет спецсимвол
+      pinObjectNode.querySelector('p small').textContent =  object.offer.address;
+      pinObjectNode.querySelector('.popup__price').innerHTML = object.offer.price + ' &#x20bd;/ночь';
 
 // навреное можно было записать короче
 if(object.offer.type === 'flat') object.offer.type = 'квартира';
@@ -127,15 +127,20 @@ pinObjectNode.querySelector('.capacity').textContent = object.offer.rooms + ' к
 pinObjectNode.querySelector('.stay__time').textContent = 'Заезд после ' + object.offer.checkin + ', выезд до ' + object.offer.checkout;
 pinObjectNode.querySelector('.description').textContent = object.offer.description;
 
-//console.log(object.offer.features);
-for(var i = 0; i < object.offer.features.length; i++) {
-  var elListFeatures = document.createElement('li');
-  elListFeatures.classList.add('feature', 'feature--' + object.offer.features[i] + '');
-  pinObjectNode.querySelector('.popup__features').innerHTML += elListFeatures;
+// удаление дочерних элементов
+var el = pinObjectNode.querySelector('.popup__features');
+while (el.lastChild) {
+  el.removeChild(el.lastChild);
 }
 
-pinObjectNode.querySelector('.map__pin').style = object.offer.address;
-//
+//console.log(object.offer.features);
+for(var i = 0; i < object.offer.features.length; i++) {
+  var featureId = object.offer.features[i];
+  var elListFeatures = document.createElement('li');
+  elListFeatures.classList.add('feature', 'feature--' + featureId);
+  pinObjectNode.querySelector('.popup__features').appendChild(elListFeatures);
+}
+
 
 return pinObjectNode;
 
