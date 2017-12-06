@@ -18,7 +18,16 @@
   var containerForPin = document.querySelector('.map__pins');
   /*  рабочий блок */
   var blockMap = document.querySelector('.map');
-  blockMap.classList.remove('map--faded');
+
+  /* блок формы */
+  var blockForm =  document.querySelector('.map__filters-container');
+  blockForm.classList.add('notice__form--disabled');
+
+  /* дизаблим все поля формы */
+  doDisabledFieldsForm();
+
+  var mapMainPin = document.querySelector('.map__pin--main');
+  mapMainPin.addEventListener('mouseup', activateFormAndMap);
 
   createObjectsArray(cardObjectsCount);
 
@@ -196,5 +205,19 @@
     return objectFeatures;
 
   }
+
+  function doDisabledFieldsForm() {
+
+    var matches = document.querySelectorAll('.map__filters select, .map__filters input');
+
+    for (var i = 0; i < matches.length; i++) {
+     matches[i].disabled = true;
+   }
+
+ }
+
+ function activateFormAndMap(){
+  blockMap.classList.remove('map--faded');
+}
 
 })();
