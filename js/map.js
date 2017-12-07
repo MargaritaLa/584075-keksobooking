@@ -21,15 +21,18 @@
   var containerForPin = document.querySelector('.map__pins');
   /*  рабочий блок */
   var blockMap = document.querySelector('.map');
-
   /* блок формы */
   var blockForm = document.querySelector('.notice__form');
+  /* стартовый пин */
+  var mapMainPin = document.querySelector('.map__pin.map__pin--main');
+  /* все пины */
+  var mapPins = document.querySelectorAll('.map__pin');
+
   blockForm.classList.add('notice__form--disabled');
 
   /* дизаблим все поля формы */
   changeStateFieldsForm(true);
 
-  var mapMainPin = document.querySelector('.map__pin.map__pin--main');
   mapMainPin.addEventListener('mouseup', activateFormAndMap);
 
   createObjectsArray(cardObjectsCount);
@@ -38,17 +41,23 @@
   renderPins(containerForPin, cardObjectsArray);
 
   /* обрабатываем нажатие по пину */
-  var mapPins = document.querySelectorAll('.map__pin');
-  mapPins.forEach(function (pin) {
-    pin.addEventListener('mouseup', function () {
-      openPopupCardObject(pin);
-    });
+  containerForPin.addEventListener('mouseup', function () {
+    var target = event.target;
+    if (target.parentElement.classList.contains('map__pin')) {
+      var pin = target;
+      processingPin(pin);
+    }
 
-    pin.addEventListener('keydown', function (event) {
-      if (event.keyCode === ENTER_KEYCODE) {
-        openPopupCardObject(pin);
+  });
+
+  containerForPin.addEventListener('keydown', function () {
+    if (event.keyCode === ENTER_KEYCODE) {
+      var target = event.target;
+      if (target.classList.contains('map__pin')) {
+        var pin = target;
+        processingPin(pin);
       }
-    });
+    }
   });
 
   document.addEventListener('keydown', onPopupEscPress);
@@ -98,9 +107,8 @@
   /*  выводим все объекты перед блоком .map__filters-container */
   function renderFirstObject(parentContainer, cardObjectsResultingArray, number) {
 
-    /* ссылка на пустой объект */
+
     var objectFragment = document.createDocumentFragment();
-    /* шаблон в который копируем объект DocumentFragment (явл-ся NODом) */
     var mapPopupObjectTemplate = document.querySelector('template').content.querySelector('article.map__card');
 
     /* блок перед которым будем вставлять блоки с нашими элементами */
@@ -121,9 +129,7 @@
     pinObjectNode.querySelector('.popup__price').innerHTML = object.offer.price + ' &#x20bd;/ночь';
     popupClose.setAttribute('tabindex', '0');
 
-    popupClose.addEventListener('click', function () {
-      closePopup();
-    });
+    popupClose.addEventListener('click', closePopup);
 
     popupClose.addEventListener('keydown', function (evt) {
       if (evt.keyCode === ENTER_KEYCODE) {
@@ -165,7 +171,6 @@
   /*  выводим все пины перед в блок .map__pins */
   function renderPins(container, objectsArray) {
 
-    /* ссылка на пустой объект */
     var objectsFragment = document.createDocumentFragment();
     var mapPinsObjectTemplate = document.querySelector('template').content.querySelector('.map__pin');
 
@@ -236,6 +241,24 @@
 
   // функции обработки событий
 
+
+  function processingPin(goal) {
+
+    var pin = goal.closest('button.map__pin');
+
+    if (!pin || pin.classList.contains('map__pin--main')) {
+      return;
+    }
+
+    if (!containerForPin.contains(pin)) {
+      return;
+    }
+
+    openPopupCardObject(pin);
+
+  }
+
+
   function activateFormAndMap() {
 
     blockMap.classList.remove('map--faded');
@@ -277,7 +300,6 @@
   }
 
   /* открытие окна */
-
   function openPopupCardObject(pin) {
     if (!pin.classList.contains('map__pin--main')) {
       deleteActiveClass();
