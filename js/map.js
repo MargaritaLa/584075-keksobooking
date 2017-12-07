@@ -17,14 +17,13 @@
   var objectPhotos = [];
   var cardObjectsArray = [];
 
-
   /*  блок куда будем отрисовывать наши pin */
   var containerForPin = document.querySelector('.map__pins');
   /*  рабочий блок */
   var blockMap = document.querySelector('.map');
 
   /* блок формы */
-  var blockForm =  document.querySelector('.notice__form');
+  var blockForm = document.querySelector('.notice__form');
   blockForm.classList.add('notice__form--disabled');
 
   /* дизаблим все поля формы */
@@ -35,30 +34,24 @@
 
   createObjectsArray(cardObjectsCount);
 
-  /* выводим все объекты перед блоком .map__filters-container */
-
-
   /* выводим все пинв в  блок .map__pins */
   renderPins(containerForPin, cardObjectsArray);
 
   /* обрабатываем нажатие по пину */
   var mapPins = document.querySelectorAll('.map__pin');
-  mapPins.forEach(function(pin){
-    pin.addEventListener('mouseup', function(event) {
-      openPopupCardObject(this);
+  mapPins.forEach(function (pin) {
+    pin.addEventListener('mouseup', function () {
+      openPopupCardObject(pin);
     });
 
-    pin.addEventListener('keydown', function(event) {
+    pin.addEventListener('keydown', function (event) {
       if (event.keyCode === ENTER_KEYCODE) {
-       openPopupCardObject(this);
-     }
-   });
+        openPopupCardObject(pin);
+      }
+    });
   });
 
   document.addEventListener('keydown', onPopupEscPress);
-
-  /*  коллекция карточек объявлений*/
-  var matchesCardObjects = document.querySelectorAll('.map__card ');
 
   /* создаем массив объектов "Объявление" */
   function createObjectsArray(cardsCount) {
@@ -126,7 +119,7 @@
     pinObjectNode.querySelector('h3').textContent = object.offer.title;
     pinObjectNode.querySelector('p small').textContent = object.offer.address;
     pinObjectNode.querySelector('.popup__price').innerHTML = object.offer.price + ' &#x20bd;/ночь';
-    popupClose.setAttribute('tabindex','0');
+    popupClose.setAttribute('tabindex', '0');
 
     popupClose.addEventListener('click', function () {
       closePopup();
@@ -177,128 +170,122 @@
     var mapPinsObjectTemplate = document.querySelector('template').content.querySelector('.map__pin');
 
     for (var i = 0; i <= objectsArray.length - 1; i++) {
-     var pinNode = renderPin(mapPinsObjectTemplate, objectsArray[i]);
-     pinNode.setAttribute('data-objectId', i);
-     objectsFragment.appendChild(pinNode);
-   }
+      var pinNode = renderPin(mapPinsObjectTemplate, objectsArray[i]);
+      pinNode.setAttribute('data-objectId', i);
+      objectsFragment.appendChild(pinNode);
+    }
 
-   container.appendChild(objectsFragment);
- }
-
- /*  функция вывода пина в верстку / отрисовка шаблона объекта в документ */
- function renderPin(mapPinsObjectTemplate, pin) {
-
-  var pinNode = mapPinsObjectTemplate.cloneNode(true);
-
-  var marginLeft = pinNode.querySelector('img').width / 2;
-  var marginTop = pinNode.querySelector('img').height / 2;
-
-  pinNode.querySelector('img').src = pin.author.avatar;
-  pinNode.style.left = (pin.location.x - marginLeft) + 'px';
-  pinNode.style.top = (pin.location.y - marginTop) + 'px';
-  pinNode.setAttribute('tabindex','0');
-  return pinNode;
-
-}
-
-/*  функция перемешивания значений в массиве */
-function shuffleArray(array) {
-  return array.sort(function () {
-    return Math.random() - 0.5;
-  });
-}
-
-/*  получить случайное число в диапозоне от min до max включительно */
-function getRandomValue(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-/*  получить массив случайных и неповторяющихся чисел */
-function getRandomNonRepeatingValue(firstNumber, lastNumber) {
-
-  var nonRepeatingValuesArray = [];
-
-  for (var i = firstNumber; i <= lastNumber; i++) {
-    nonRepeatingValuesArray.push(i);
+    container.appendChild(objectsFragment);
   }
 
-  return shuffleArray(nonRepeatingValuesArray);
+  /*  функция вывода пина в верстку / отрисовка шаблона объекта в документ */
+  function renderPin(mapPinsObjectTemplate, pin) {
 
-}
+    var pinNode = mapPinsObjectTemplate.cloneNode(true);
 
-/* получение массива что есть в объекте wifi, parking и пр. */
-function getObjectFeatures(allFeatures) {
+    var marginLeft = pinNode.querySelector('img').width / 2;
+    var marginTop = pinNode.querySelector('img').height / 2;
 
-  var objectFeatures = [];
+    pinNode.querySelector('img').src = pin.author.avatar;
+    pinNode.style.left = (pin.location.x - marginLeft) + 'px';
+    pinNode.style.top = (pin.location.y - marginTop) + 'px';
+    pinNode.setAttribute('tabindex', '0');
+    return pinNode;
 
-  allFeatures = shuffleArray(allFeatures);
-
-  for (var i = 0; i < getRandomValue(0, allFeatures.length); i++) {
-    objectFeatures.push(allFeatures[i]);
   }
 
-  return objectFeatures;
-
-}
-
- // функции обработки событий
-
- function activateFormAndMap(){
-
-  blockMap.classList.remove('map--faded');
-  blockForm.classList.remove('notice__form--disabled');
-  changeStateFieldsForm(false);
-
-}
-
-function deleteCardObject() {
-  var destroyed = document.querySelector('.map__card');
-  if(destroyed){
-    destroyed.remove();
+  /*  функция перемешивания значений в массиве */
+  function shuffleArray(array) {
+    return array.sort(function () {
+      return Math.random() - 0.5;
+    });
   }
-}
 
-function changeStateFieldsForm(flag) {
-  var matches = document.querySelectorAll('.map__filters select, .map__filters input');
-  for (var i = 0; i < matches.length; i++) {
-   matches[i].disabled = flag;
- }
-}
-
-function deleteActiveClass(){
-  for (var i = 0; i <= mapPins.length - 1; i++) {
-    mapPins[i].classList.remove('map__pin--active');
+  /*  получить случайное число в диапозоне от min до max включительно */
+  function getRandomValue(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
   }
-}
 
-/* закрытие окна */
-function onPopupEscPress(evt) {
-  if (evt.keyCode === ESC_KEYCODE) {
-    closePopup();
+  /*  получить массив случайных и неповторяющихся чисел */
+  function getRandomNonRepeatingValue(firstNumber, lastNumber) {
+
+    var nonRepeatingValuesArray = [];
+
+    for (var i = firstNumber; i <= lastNumber; i++) {
+      nonRepeatingValuesArray.push(i);
+    }
+
+    return shuffleArray(nonRepeatingValuesArray);
+
   }
-};
 
-function closePopup() {
-  var focused = document.activeElement;
-  deleteCardObject();
-  deleteActiveClass();
-};
+  /* получение массива что есть в объекте wifi, parking и пр. */
+  function getObjectFeatures(allFeatures) {
 
-/* открытие окна */
+    var objectFeatures = [];
 
-function openPopup() {
-  var focused = document.activeElement;
-  document.addEventListener('keydown', onPopupEscPress);
-};
+    allFeatures = shuffleArray(allFeatures);
 
-function openPopupCardObject(pin) {
- if (!pin.classList.contains('map__pin--main')){
-  deleteActiveClass();
-  pin.classList.add('map__pin--active');
-  deleteCardObject();
-  var indexObject = pin.getAttribute('data-objectid');
-  renderFirstObject(blockMap, cardObjectsArray, indexObject);
-}
-}
+    for (var i = 0; i < getRandomValue(0, allFeatures.length); i++) {
+      objectFeatures.push(allFeatures[i]);
+    }
+
+    return objectFeatures;
+
+  }
+
+  // функции обработки событий
+
+  function activateFormAndMap() {
+
+    blockMap.classList.remove('map--faded');
+    blockForm.classList.remove('notice__form--disabled');
+    changeStateFieldsForm(false);
+
+  }
+
+  function deleteCardObject() {
+    var destroyed = document.querySelector('.map__card');
+    if (destroyed) {
+      destroyed.remove();
+    }
+  }
+
+  function changeStateFieldsForm(flag) {
+    var matches = document.querySelectorAll('.map__filters select, .map__filters input');
+    for (var i = 0; i < matches.length; i++) {
+      matches[i].disabled = flag;
+    }
+  }
+
+  function deleteActiveClass() {
+    for (var i = 0; i <= mapPins.length - 1; i++) {
+      mapPins[i].classList.remove('map__pin--active');
+    }
+  }
+
+  /* закрытие окна */
+  function onPopupEscPress(evt) {
+    if (evt.keyCode === ESC_KEYCODE) {
+      closePopup();
+    }
+  }
+
+  function closePopup() {
+    deleteCardObject();
+    deleteActiveClass();
+  }
+
+  /* открытие окна */
+
+  function openPopupCardObject(pin) {
+    if (!pin.classList.contains('map__pin--main')) {
+      deleteActiveClass();
+      pin.classList.add('map__pin--active');
+      deleteCardObject();
+      var indexObject = pin.getAttribute('data-objectid');
+      renderFirstObject(blockMap, cardObjectsArray, indexObject);
+    }
+  }
 
 })();
