@@ -16,6 +16,7 @@
   var objectAllFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
   var objectPhotos = [];
   var cardObjectsArray = [];
+  var mapPins;
 
   /*  блок куда будем отрисовывать наши pin */
   var containerForPin = document.querySelector('.map__pins');
@@ -168,7 +169,6 @@
 
   /*  выводим все пины перед в блок .map__pins */
   function renderPins(container, objectsArray) {
-
     var objectsFragment = document.createDocumentFragment();
     var mapPinsObjectTemplate = document.querySelector('template').content.querySelector('.map__pin');
 
@@ -179,6 +179,7 @@
     }
 
     container.appendChild(objectsFragment);
+    return mapPins = document.querySelectorAll('.map__pin');
   }
 
   /*  функция вывода пина в верстку / отрисовка шаблона объекта в документ */
@@ -281,7 +282,7 @@
 
   function deleteActiveClass() {
     /* все пины */
-    var mapPins = document.querySelectorAll('.map__pin');
+    //var mapPins = document.querySelectorAll('.map__pin');
     for (var i = 0; i <= mapPins.length - 1; i++) {
       mapPins[i].classList.remove('map__pin--active');
     }
