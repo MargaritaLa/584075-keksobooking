@@ -25,8 +25,7 @@
   var blockForm = document.querySelector('.notice__form');
   /* стартовый пин */
   var mapMainPin = document.querySelector('.map__pin.map__pin--main');
-  /* все пины */
-  var mapPins = document.querySelectorAll('.map__pin');
+
 
   blockForm.classList.add('notice__form--disabled');
 
@@ -106,7 +105,6 @@
 
   /*  выводим все объекты перед блоком .map__filters-container */
   function renderFirstObject(parentContainer, cardObjectsResultingArray, number) {
-
 
     var objectFragment = document.createDocumentFragment();
     var mapPopupObjectTemplate = document.querySelector('template').content.querySelector('article.map__card');
@@ -282,6 +280,8 @@
   }
 
   function deleteActiveClass() {
+    /* все пины */
+    var mapPins = document.querySelectorAll('.map__pin');
     for (var i = 0; i <= mapPins.length - 1; i++) {
       mapPins[i].classList.remove('map__pin--active');
     }
