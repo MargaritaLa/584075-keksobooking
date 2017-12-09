@@ -330,34 +330,18 @@
 
   /* работа с формой отправки */
 
-  getType(typeFields.value);
+  getMinPriceForObjectType(typeFields.value);
   syncChoiceRoomsAndCapacity(roomsFields.value, capacityFields);
 
   titleField.addEventListener('invalid', function () {
     if (titleField.validity.tooShort) {
-      titleField.setCustomValidity('Имя должно состоять минимум из 30 символов');
-      titleField.classList.add('error');
+      setFieldError(titleField, 'Имя должно состоять минимум из 30 символов');
     } else if (titleField.validity.tooLong) {
-      titleField.setCustomValidity('Имя не должно превышать 100 символов');
-      titleField.classList.add('error');
+      setFieldError(titleField, 'Имя не должно превышать 100 символов');
     } else if (titleField.validity.valueMissing) {
-      titleField.setCustomValidity('Обязательное поле');
-      titleField.classList.add('error');
+      setFieldError(titleField, 'Обязательное поле');
     } else {
       titleField.setCustomValidity('');
-
-    }
-  });
-
-  /* код для браузера Edge*/
-  titleField.addEventListener('input', function (evt) {
-    var target = evt.target;
-    if (target.value.length < 30) {
-      target.setCustomValidity('Имя должно состоять минимум из 30 символов');
-    } else if (target.value.length > 100) {
-      titleField.setCustomValidity('Имя не должно превышать 100 символов');
-    } else {
-      target.setCustomValidity('');
     }
   });
 
@@ -369,24 +353,26 @@
 
   function syncChoiceTypeAndPrice() {
     if (typeFields.value === 'flat' && priceField.value < flatMinPrice) {
-      priceField.setCustomValidity('минимальная цена квартиры должна быть не менее ' + flatMinPrice + ' рублей');
-      priceField.classList.add('error');
+      setFieldError(priceField, 'минимальная цена квартиры должна быть не менее ' + flatMinPrice + ' рублей');
     } else if (typeFields.value === 'bungalo' && priceField.value < bungaloMinPrice) {
-      priceField.setCustomValidity('минимальная цена лачуги должна быть не менее ' + bungaloMinPrice + '  рублей');
-      priceField.classList.add('error');
+      setFieldError(priceField, 'минимальная цена лачуги должна быть не менее ' + bungaloMinPrice + '  рублей');
     } else if (typeFields.value === 'house' && priceField.value < houseMinPrice) {
-      priceField.setCustomValidity('минимальная цена домы должна быть не менее ' + houseMinPrice + ' рублей');
-      priceField.classList.add('error');
+      setFieldError(priceField, 'минимальная цена домы должна быть не менее ' + houseMinPrice + ' рублей');
     } else if (typeFields.value === 'palace' && priceField.value < palaceMinPrice) {
-      priceField.setCustomValidity('минимальная цена домы должна быть не менее ' + palaceMinPrice + ' рублей');
-      priceField.classList.add('error');
+      setFieldError(priceField, 'минимальная цена домы должна быть не менее ' + palaceMinPrice + ' рублей');
     } else if (priceField.value > maxPrice) {
-      priceField.setCustomValidity('стоимость не может быть больше ' + maxPrice + ' рублей');
-      priceField.classList.add('error');
+      setFieldError(priceField, 'стоимость не может быть больше ' + maxPrice + ' рублей');
+    } else if (priceField.value < minPrice) {
+      setFieldError(priceField, 'стоимость не может быть меньше ' + minPrice + ' рублей');
     } else {
       priceField.setCustomValidity('');
     }
 
+  }
+
+  function setFieldError(targetField, errorMsg) {
+    targetField.setCustomValidity(errorMsg);
+    targetField.classList.add('error');
   }
 
   /* синхронизация работы полей времени заезда-выезда  */
@@ -406,19 +392,18 @@
           timeinField.value = target.value;
           break;
         case 'type':
-          getType(target.value);
+          getMinPriceForObjectType(target.value);
           syncChoiceTypeAndPrice(target);
           break;
         case 'rooms':
-          var countRooms = target.value;
-          syncChoiceRoomsAndCapacity(countRooms, target);
+          syncChoiceRoomsAndCapacity(target.value);
           break;
       }
     }
   });
 
-  function syncChoiceRoomsAndCapacity(count) {
-    switch (count) {
+  function syncChoiceRoomsAndCapacity(countRooms) {
+    switch (countRooms) {
       case '1':
         capacityFields.value = 1;
         break;
@@ -432,12 +417,10 @@
         capacityFields.value = 0;
         break;
     }
-
   }
 
-  function getType(choiceType) {
-    var nameType = choiceType;
-    switch (nameType) {
+  function getMinPriceForObjectType(objectType) {
+    switch (objectType) {
       case 'bungalo':
         minPrice = bungaloMinPrice;
         break;
@@ -451,8 +434,6 @@
         minPrice = palaceMinPrice;
         break;
     }
-
-    return minPrice;
   }
 
 
