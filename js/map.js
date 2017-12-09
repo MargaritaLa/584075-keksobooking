@@ -28,6 +28,22 @@
   var mapMainPin = document.querySelector('.map__pin.map__pin--main');
 
 
+  /* работа с переменными для формы отправки */
+  var titleField = blockForm.querySelector('#title');
+  var priceField = blockForm.querySelector('#price');
+  var timeinField = blockForm.querySelector('#timein');
+  var timeoutField = blockForm.querySelector('#timeout');
+  var typeFields = blockForm.querySelector('#type');
+  var capacityFields = blockForm.querySelector('#capacity');
+  var roomsFields = blockForm.querySelector('#room_number');
+  var minPrice = 0;
+  var maxPrice = 1000000;
+  var flatMinPrice = 1000;
+  var bungaloMinPrice = 0;
+  var houseMinPrice = 5000;
+  var palaceMinPrice = 10000;
+
+  /* работа с картой */
   blockForm.classList.add('notice__form--disabled');
 
   /* дизаблим все поля формы */
@@ -179,7 +195,8 @@
     }
 
     container.appendChild(objectsFragment);
-    return mapPins = document.querySelectorAll('.map__pin');
+    mapPins = document.querySelectorAll('.map__pin');
+    return mapPins;
   }
 
   /*  функция вывода пина в верстку / отрисовка шаблона объекта в документ */
@@ -282,7 +299,6 @@
 
   function deleteActiveClass() {
     /* все пины */
-    //var mapPins = document.querySelectorAll('.map__pin');
     for (var i = 0; i <= mapPins.length - 1; i++) {
       mapPins[i].classList.remove('map__pin--active');
     }
@@ -310,5 +326,134 @@
       renderFirstObject(blockMap, cardObjectsArray, indexObject);
     }
   }
+
+
+  /* работа с формой отправки */
+
+  getType(typeFields.value);
+  syncChoiceRoomsAndCapacity(roomsFields.value, capacityFields);
+
+  titleField.addEventListener('invalid', function () {
+    if (titleField.validity.tooShort) {
+      titleField.setCustomValidity('Имя должно состоять минимум из 30 символов');
+      titleField.classList.add('error');
+    } else if (titleField.validity.tooLong) {
+      titleField.setCustomValidity('Имя не должно превышать 100 символов');
+      titleField.classList.add('error');
+    } else if (titleField.validity.valueMissing) {
+      titleField.setCustomValidity('Обязательное поле');
+      titleField.classList.add('error');
+    } else {
+      titleField.setCustomValidity('');
+
+    }
+  });
+
+  /* код для браузера Edge*/
+  titleField.addEventListener('input', function (evt) {
+    var target = evt.target;
+    if (target.value.length < 30) {
+      target.setCustomValidity('Имя должно состоять минимум из 30 символов');
+    } else if (target.value.length > 100) {
+      titleField.setCustomValidity('Имя не должно превышать 100 символов');
+    } else {
+      target.setCustomValidity('');
+    }
+  });
+
+  /* валидация поля ЦЕНА */
+  priceField.addEventListener('input', function (evt) {
+    var target = evt.target;
+    syncChoiceTypeAndPrice(target);
+  });
+
+  function syncChoiceTypeAndPrice() {
+    if (typeFields.value === 'flat' && priceField.value < flatMinPrice) {
+      priceField.setCustomValidity('минимальная цена квартиры должна быть не менее ' + flatMinPrice + ' рублей');
+      priceField.classList.add('error');
+    } else if (typeFields.value === 'bungalo' && priceField.value < bungaloMinPrice) {
+      priceField.setCustomValidity('минимальная цена лачуги должна быть не менее ' + bungaloMinPrice + '  рублей');
+      priceField.classList.add('error');
+    } else if (typeFields.value === 'house' && priceField.value < houseMinPrice) {
+      priceField.setCustomValidity('минимальная цена домы должна быть не менее ' + houseMinPrice + ' рублей');
+      priceField.classList.add('error');
+    } else if (typeFields.value === 'palace' && priceField.value < palaceMinPrice) {
+      priceField.setCustomValidity('минимальная цена домы должна быть не менее ' + palaceMinPrice + ' рублей');
+      priceField.classList.add('error');
+    } else if (priceField.value > maxPrice) {
+      priceField.setCustomValidity('стоимость не может быть больше ' + maxPrice + ' рублей');
+      priceField.classList.add('error');
+    } else {
+      priceField.setCustomValidity('');
+    }
+
+  }
+
+  /* синхронизация работы полей времени заезда-выезда  */
+  blockForm.addEventListener('change', function () {
+
+    var target = event.target;
+
+    if (target.tagName === 'SELECT') {
+
+      var nameSelect = target.getAttribute('name');
+
+      switch (nameSelect) {
+        case 'timein':
+          timeoutField.value = target.value;
+          break;
+        case 'timeout':
+          timeinField.value = target.value;
+          break;
+        case 'type':
+          getType(target.value);
+          syncChoiceTypeAndPrice(target);
+          break;
+        case 'rooms':
+          var countRooms = target.value;
+          syncChoiceRoomsAndCapacity(countRooms, target);
+          break;
+      }
+    }
+  });
+
+  function syncChoiceRoomsAndCapacity(count) {
+    switch (count) {
+      case '1':
+        capacityFields.value = 1;
+        break;
+      case '2':
+        capacityFields.value = 2;
+        break;
+      case '3':
+        capacityFields.value = 3;
+        break;
+      case '100':
+        capacityFields.value = 0;
+        break;
+    }
+
+  }
+
+  function getType(choiceType) {
+    var nameType = choiceType;
+    switch (nameType) {
+      case 'bungalo':
+        minPrice = bungaloMinPrice;
+        break;
+      case 'flat':
+        minPrice = flatMinPrice;
+        break;
+      case 'house':
+        minPrice = houseMinPrice;
+        break;
+      case 'palace':
+        minPrice = palaceMinPrice;
+        break;
+    }
+
+    return minPrice;
+  }
+
 
 })();
