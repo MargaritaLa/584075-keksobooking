@@ -6,6 +6,7 @@
 
   /* блок формы */
   var blockForm = document.querySelector('.notice__form');
+  window.addressField = blockForm.querySelector('#address');
   var titleField = blockForm.querySelector('#title');
   var priceField = blockForm.querySelector('#price');
   var timeinField = blockForm.querySelector('#timein');
@@ -93,18 +94,18 @@
 
       switch (nameSelect) {
         case 'timein':
-          timeoutField.value = target.value;
-          break;
+        timeoutField.value = target.value;
+        break;
         case 'timeout':
-          timeinField.value = target.value;
-          break;
+        timeinField.value = target.value;
+        break;
         case 'type':
-          getMinPriceForObjectType(target.value);
-          syncChoiceTypeAndPrice(target);
-          break;
+        getMinPriceForObjectType(target.value);
+        syncChoiceTypeAndPrice(target);
+        break;
         case 'rooms':
-          syncChoiceRoomsAndCapacity(target.value);
-          break;
+        syncChoiceRoomsAndCapacity(target.value);
+        break;
       }
     }
   });
@@ -112,34 +113,34 @@
   function syncChoiceRoomsAndCapacity(countRooms) {
     switch (countRooms) {
       case '1':
-        capacityFields.value = 1;
-        break;
+      capacityFields.value = 1;
+      break;
       case '2':
-        capacityFields.value = 2;
-        break;
+      capacityFields.value = 2;
+      break;
       case '3':
-        capacityFields.value = 3;
-        break;
+      capacityFields.value = 3;
+      break;
       case '100':
-        capacityFields.value = 0;
-        break;
+      capacityFields.value = 0;
+      break;
     }
   }
 
   function getMinPriceForObjectType(objectType) {
     switch (objectType) {
       case 'bungalo':
-        minPrice = bungaloMinPrice;
-        break;
+      minPrice = bungaloMinPrice;
+      break;
       case 'flat':
-        minPrice = flatMinPrice;
-        break;
+      minPrice = flatMinPrice;
+      break;
       case 'house':
-        minPrice = houseMinPrice;
-        break;
+      minPrice = houseMinPrice;
+      break;
       case 'palace':
-        minPrice = palaceMinPrice;
-        break;
+      minPrice = palaceMinPrice;
+      break;
     }
   }
 
