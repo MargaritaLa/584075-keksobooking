@@ -69,8 +69,8 @@
        }
      }
 
-     if (coordY > lowerLimit - halfHeight) {
-      coordTop = lowerLimit - halfHeight;
+     if (coordY > lowerLimit) {
+      coordTop = lowerLimit;
     } else {
       if ( coordY < upperLimit) {
         coordTop = upperLimit;
@@ -85,8 +85,6 @@
    window.addressField.value = 'x: ' + coordLeft + ', y: ' + coordTop;
 
  };
-
-
 
  var onMouseUp = function (upEvt) {
   upEvt.preventDefault();
