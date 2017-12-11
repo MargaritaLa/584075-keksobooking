@@ -11,7 +11,7 @@
   var mapMainPin = document.querySelector('.map__pin.map__pin--main');
 
   var lowerLimit = 500;
-  var upperLimit = 100;
+  var fromTopEdgeIndent = 200;
 
   /* работа с картой */
   mapMainPin.addEventListener('mouseup', activateFormAndMap);
@@ -49,7 +49,7 @@
       var coordY = (mainPinHandle.offsetTop - shift.y);
       var coordX = (mainPinHandle.offsetLeft - shift.x);
       var halfWidth = mainPinHandle.clientWidth / 2;
-      var halfHeight = (mainPinHandle.clientHeight + 22) / 2 ;
+      var halfHeight = Math.floor((mainPinHandle.clientHeight + 22) / 2);
 
       var coordLeft;
       var coordTop;
@@ -62,40 +62,40 @@
       if (coordX < halfWidth) {
         coordLeft = halfWidth;
       } else {
-        if( coordX > containerForPin.clientWidth - halfWidth) {
+        if (coordX > containerForPin.clientWidth - halfWidth) {
           coordLeft = containerForPin.clientWidth - halfWidth;
         } else {
-         coordLeft = coordX;
-       }
-     }
+          coordLeft = coordX;
+        }
+      }
 
-     if (coordY > lowerLimit) {
-      coordTop = lowerLimit;
-    } else {
-      if ( coordY < upperLimit) {
-        coordTop = upperLimit;
+      if (coordY > lowerLimit + fromTopEdgeIndent - halfHeight) {
+        coordTop = lowerLimit + fromTopEdgeIndent - halfHeight;
       } else {
-       coordTop = coordY;
-     }
-   }
+        if (coordY < fromTopEdgeIndent - halfHeight) {
+          coordTop = fromTopEdgeIndent - halfHeight;
+        } else {
+          coordTop = coordY;
+        }
+      }
 
-   mainPinHandle.style.left = coordLeft + 'px';
-   mainPinHandle.style.top = coordTop + 'px';
+      mainPinHandle.style.left = coordLeft + 'px';
+      mainPinHandle.style.top = coordTop + 'px';
 
-   window.addressField.value = 'x: ' + coordLeft + ', y: ' + coordTop;
+      window.addressField.value = 'x: ' + coordLeft + ', y: ' + (coordTop - fromTopEdgeIndent + halfHeight);
 
- };
+    };
 
- var onMouseUp = function (upEvt) {
-  upEvt.preventDefault();
-  document.removeEventListener('mousemove', onMouseMove);
-  document.removeEventListener('mouseup', onMouseUp);
-};
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
 
-document.addEventListener('mousemove', onMouseMove);
-document.addEventListener('mouseup', onMouseUp);
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
 
-});
+  });
 
   mainPinHandle.addEventListener('click', function (evt) {
     evt.preventDefault();
