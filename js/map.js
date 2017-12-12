@@ -61,23 +61,21 @@
 
       if (coordX < halfWidth) {
         coordLeft = halfWidth;
+      } else if (coordX > containerForPin.clientWidth - halfWidth) {
+        coordLeft = containerForPin.clientWidth - halfWidth;
       } else {
-        if (coordX > containerForPin.clientWidth - halfWidth) {
-          coordLeft = containerForPin.clientWidth - halfWidth;
-        } else {
-          coordLeft = coordX;
-        }
+        coordLeft = coordX;
       }
+
 
       if (coordY > lowerLimit + fromTopEdgeIndent - halfHeight) {
         coordTop = lowerLimit + fromTopEdgeIndent - halfHeight;
+      } else if (coordY < fromTopEdgeIndent - halfHeight) {
+        coordTop = fromTopEdgeIndent - halfHeight;
       } else {
-        if (coordY < fromTopEdgeIndent - halfHeight) {
-          coordTop = fromTopEdgeIndent - halfHeight;
-        } else {
-          coordTop = coordY;
-        }
+        coordTop = coordY;
       }
+
 
       mainPinHandle.style.left = coordLeft + 'px';
       mainPinHandle.style.top = coordTop + 'px';
