@@ -23,7 +23,7 @@
     var imageObjectNumbers = window.utils.getRandomNonRepeatingValue(imageStartRange, imageEndRange);
 
     objectNames = window.utils.shuffleArray(objectNames);
-    objectTypes = window.utils.shuffleArray(objectTypes);
+    window.objectTypes = window.utils.shuffleArray(window.objectTypes);
 
     for (var i = 0; i < cardsCount; i++) {
 
@@ -38,7 +38,7 @@
           title: objectNames[i],
           address: objectLocationX + ', ' + objectLocationY,
           price: window.utils.getRandomValue(1000, 1000000),
-          type: objectTypes[window.utils.getRandomValue(0, objectTypes.length - 1)],
+          type: window.objectTypes[window.utils.getRandomValue(0, window.objectTypes.length - 1)],
           rooms: window.utils.getRandomValue(1, 5),
           guests: window.utils.getRandomValue(1, 1000),
           checkin: objectCheckinTimes[window.utils.getRandomValue(0, objectCheckinTimes.length - 1)],

@@ -5,8 +5,6 @@
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
 
-  var blockMap = document.querySelector('.map');
-
   window.cardsUtils = {
 
     /*  выводим все объекты перед блоком .map__filters-container */
@@ -91,16 +89,6 @@
       }
     },
 
-    /* открытие окна */
-    openPopupCardObject: function (pin) {
-      if (!pin.classList.contains('map__pin--main')) {
-        window.pinsUtils.deleteActiveClass();
-        pin.classList.add('map__pin--active');
-        window.cardsUtils.deleteCardObject();
-        var indexObject = pin.getAttribute('data-objectid');
-        window.cardsUtils.renderFirstObject(blockMap, window.data.cardObjectsArray, indexObject);
-      }
-    }
   };
 
 

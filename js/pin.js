@@ -67,7 +67,7 @@
         return;
       }
 
-      window.cardsUtils.openPopupCardObject(pin);
+      window.showCard(pin);
     },
 
     /* обрабатываем нажатие по пину */
