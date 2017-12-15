@@ -51,11 +51,11 @@
   /* работа с формой отправки */
   titleField.addEventListener('invalid', function () {
     if (titleField.validity.tooShort) {
-      setFieldError(titleField, 'Имя должно состоять минимум из 30 символов');
+      validateField(titleField, 'Имя должно состоять минимум из 30 символов');
     } else if (titleField.validity.tooLong) {
-      setFieldError(titleField, 'Имя не должно превышать 100 символов');
+      validateField(titleField, 'Имя не должно превышать 100 символов');
     } else if (titleField.validity.valueMissing) {
-      setFieldError(titleField, 'Обязательное поле');
+      validateField(titleField, 'Обязательное поле');
     } else {
       titleField.setCustomValidity('');
     }
@@ -68,7 +68,7 @@
   });
 
 
-  function setFieldError(targetField, errorMsg) {
+  function validateField(targetField, errorMsg) {
     targetField.setCustomValidity(errorMsg);
     targetField.classList.add('error');
   }
@@ -76,17 +76,17 @@
   /* валидация поля стоимости объекта*/
   function syncChoiceTypeAndPrice() {
     if (typeFields.value === 'flat' && priceField.value < MINPRICE['flat']) {
-      setFieldError(priceField, 'минимальная цена квартиры должна быть не менее ' + MINPRICE['flat'] + ' рублей');
+      validateField(priceField, 'минимальная цена квартиры должна быть не менее ' + MINPRICE['flat'] + ' рублей');
     } else if (typeFields.value === 'bungalo' && priceField.value < MINPRICE['bungalo']) {
-      setFieldError(priceField, 'минимальная цена лачуги должна быть не менее ' + MINPRICE['bungalo'] + '  рублей');
+      validateField(priceField, 'минимальная цена лачуги должна быть не менее ' + MINPRICE['bungalo'] + '  рублей');
     } else if (typeFields.value === 'house' && priceField.value < MINPRICE['house']) {
-      setFieldError(priceField, 'минимальная цена дома должна быть не менее ' + MINPRICE['house'] + ' рублей');
+      validateField(priceField, 'минимальная цена дома должна быть не менее ' + MINPRICE['house'] + ' рублей');
     } else if (typeFields.value === 'palace' && priceField.value < MINPRICE['palace']) {
-      setFieldError(priceField, 'минимальная цена дворца должна быть не менее ' + MINPRICE['palace'] + ' рублей');
+      validateField(priceField, 'минимальная цена дворца должна быть не менее ' + MINPRICE['palace'] + ' рублей');
     } else if (priceField.value > maxPrice) {
-      setFieldError(priceField, 'стоимость не может быть больше ' + maxPrice + ' рублей');
+      validateField(priceField, 'стоимость не может быть больше ' + maxPrice + ' рублей');
     } else if (priceField.value < minPrice) {
-      setFieldError(priceField, 'стоимость не может быть меньше ' + minPrice + ' рублей');
+      validateField(priceField, 'стоимость не может быть меньше ' + minPrice + ' рублей');
     } else {
       priceField.setCustomValidity('');
     }
