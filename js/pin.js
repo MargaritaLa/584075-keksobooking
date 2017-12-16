@@ -8,10 +8,14 @@
   /*  блок куда будем отрисовывать наши pin */
   var containerForPin = document.querySelector('.map__pins');
 
+  window.dataUtils.onDataLoadedCallback = function (objectsArray) {
+    window.pinsUtils.renderPins(objectsArray);
+  };
 
   window.pinsUtils = {
+
     /*  выводим все пины перед в блок .map__pins */
-    renderPins: function renderPins(objectsArray) {
+    renderPins: function (objectsArray) {
 
       var objectsFragment = document.createDocumentFragment();
       var mapPinsObjectTemplate = document.querySelector('template').content.querySelector('.map__pin');

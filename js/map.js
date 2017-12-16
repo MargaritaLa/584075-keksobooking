@@ -15,12 +15,9 @@
 
   /* работа с картой */
   mapMainPin.addEventListener('mouseup', activateFormAndMap);
-  /* выводим все пины в  блок .map__pins */
-  window.pinsUtils.renderPins(window.data.cardObjectsArray);
   document.addEventListener('keydown', window.cardsUtils.onPopupEscPress);
 
   /* функции обработки событий */
-
   function activateFormAndMap() {
     blockMap.classList.remove('map--faded');
     blockForm.classList.remove('notice__form--disabled');
