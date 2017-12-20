@@ -58,7 +58,6 @@
       while (el.lastChild) {
         el.removeChild(el.lastChild);
       }
-
       for (var i = 0; i < object.offer.features.length; i++) {
         var featureId = object.offer.features[i];
         var elListFeatures = document.createElement('li');
