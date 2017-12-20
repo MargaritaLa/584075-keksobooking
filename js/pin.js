@@ -14,13 +14,15 @@
 
   window.pinsUtils = {
 
-    determineNumberOutputLabels: function(numberOutputLabels){
-      var maxNumberOutputLabels = 5;
-      return numberOutputLabels <= maxNumberOutputLabels ? numberOutputLabels : numberOutputLabels = maxNumberOutputLabels;
+    determineNumberOutputLabels: function (numberOutputLabels) {
 
+      var maxNumberOutputLabels = 5;
+      numberOutputLabels = numberOutputLabels <= maxNumberOutputLabels ? numberOutputLabels : maxNumberOutputLabels;
+
+      return numberOutputLabels;
     },
 
-    preRenderPins: function (template, obj, fragment, id){
+    preRenderPins: function (template, obj, fragment, id) {
 
       var pinNode = window.pinsUtils.renderPin(template, obj);
       pinNode.setAttribute('data-objectId', id);
@@ -30,6 +32,7 @@
 
     /*  выводим все пины перед в блок .map__pins */
     renderPins: function (objectsArray) {
+
       var objectsFragment = document.createDocumentFragment();
       var mapPinsObjectTemplate = document.querySelector('template').content.querySelector('.map__pin');
       var length = window.pinsUtils.determineNumberOutputLabels(objectsArray.length);
@@ -125,35 +128,28 @@
 
     },
 
-    deletePins: function() {
+    deletePins: function () {
 
       var needDelete = [];
 
-      for (var i = 0; i < containerForPin.childNodes.length; i++)
-      {
-    // если тип узла - элемент
-    if (containerForPin.childNodes[i].nodeType === 1
-      && containerForPin.childNodes[i].nodeType !== 'undefined'
-      && !containerForPin.childNodes[i].classList.contains('map__pin--main')
-      && !containerForPin.childNodes[i].classList.contains('map__pinsoverlay')
-      && containerForPin.childNodes[i].classList.contains('map__pin'))
-    {
-      needDelete.push(containerForPin.childNodes[i]);
+      for (var i = 0; i < containerForPin.childNodes.length; i++) {
+
+        if (containerForPin.childNodes[i].nodeType === 1
+          && containerForPin.childNodes[i].nodeType !== 'undefined'
+          && !containerForPin.childNodes[i].classList.contains('map__pin--main')
+          && !containerForPin.childNodes[i].classList.contains('map__pinsoverlay')
+          && containerForPin.childNodes[i].classList.contains('map__pin')) {
+          needDelete.push(containerForPin.childNodes[i]);
+        }
+      }
+
+      for (var j = 0; j < needDelete.length; j++) {
+        needDelete[j].remove();
+      }
     }
-  }
+  };
 
-  for(var i = 0; i < needDelete.length; i++) {
-    needDelete[i].remove();
-  }
-
-}
-
-};
-
-window.pinsUtils.clickOnPin();
-window.pinsUtils.keydownOnPin();
-
-
-
+  window.pinsUtils.clickOnPin();
+  window.pinsUtils.keydownOnPin();
 
 })();
