@@ -86,19 +86,7 @@
     var selectedOption = selectFilter[1];
     switch (selectName) {
       case 'type':
-        if (object.offer.type === selectedOption) {
-          return true;
-        }
-        if (object.offer.type === selectedOption) {
-          return true;
-        }
-        if (object.offer.type === selectedOption) {
-          return true;
-        }
-        if (selectedOption === 'any') {
-          return true;
-        }
-        break;
+        return selectedOption === 'any' ? true : object.offer.type === selectedOption;
       case 'price':
         if (selectedOption === 'middle') {
           return (object.offer.price < 10000 && object.offer.price <= 50000);
