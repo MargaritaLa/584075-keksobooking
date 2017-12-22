@@ -2,9 +2,12 @@
 
 (function () {
 
+
   var formFilter = document.querySelector('.map__filters');
   var filtersCheckboxes = document.querySelectorAll('#housing-features input[type="checkbox"]');
 
+
+  // функционал фильтра
   window.filterUtils = {
 
     getSelectsFiltersList: function () {
@@ -14,11 +17,14 @@
       var filtersSelects = document.querySelectorAll('.map__filters select');
 
       for (var i = 0; i < filtersSelects.length; i++) {
-        var  filtersSelect = filtersSelects[i];
-        var nameSelect = filtersSelect.getAttribute('name').split('-')[1];
+
+        var nameSelect = filtersSelects[i].getAttribute('name').split('-')[1];
+        var filtersSelect = filtersSelects[i];
+
         if (filtersSelect.nodeType === 1) {
           arraySelects.push([nameSelect, filtersSelect.options[filtersSelect.selectedIndex].value]);
         }
+
       }
 
       return arraySelects;
@@ -43,34 +49,31 @@
       var filteredObjects = [];
 
       var selectsFilters = window.filterUtils.getSelectsFiltersList();
+
       var checkboxFilters = window.filterUtils.getCheckboxesFiltersList();
 
       for (var i = 0; i < sourceObjects.length; i++) {
 
         var object = sourceObjects[i];
-        var isSatisfy = true;
+        var isSatisfyCheckboxFilters = true;
+        var isSatisfySelectFilters = true;
 
         for (var checkboxFilterIdx = 0; checkboxFilterIdx < checkboxFilters.length; checkboxFilterIdx++) {
           var checkboxFilter = checkboxFilters[checkboxFilterIdx];
           if (!object.offer.features.includes(checkboxFilter)) {
+            isSatisfyCheckboxFilters = false;
             break;
           }
         }
 
-        if (isSatisfy) {
-          for (var selectFilterIdx = 0; selectFilterIdx < selectsFilters.length; selectFilterIdx++) {
-            var selectFilter = selectsFilters[selectFilterIdx];
-            if (!isSatisfySelectFilter(selectFilter, object)) {
-              isSatisfy = false;
-              break;
-            }
-          }
-        }
+        isSatisfySelectFilters = selectsFilters.every(function (selectFilter) {
+          var res = isSatisfySelectFilter(selectFilter, object);
+          return res;
+        });
 
-        if (isSatisfy) {
+        if (isSatisfyCheckboxFilters && isSatisfySelectFilters) {
           filteredObjects.push(object);
         }
-
       }
 
       window.pinsUtils.deletePins();
@@ -80,40 +83,46 @@
 
   };
 
+
   function isSatisfySelectFilter(selectFilter, object) {
+
     var selectName = selectFilter[0];
     var selectedOption = selectFilter[1];
+
     switch (selectName) {
       case 'type':
-      return selectedOption === 'any' ? true : object.offer.type === selectedOption;
+        return selectedOption === 'any' ? true : object.offer.type === selectedOption;
       case 'price':
-      if (selectedOption === 'middle') {
-        return (object.offer.price < 10000 && object.offer.price <= 50000);
-      }
-      if (selectedOption === 'low') {
-        return (object.offer.price <= 10000);
-      }
-      if (selectedOption === 'high') {
-        return (object.offer.price >= 50000);
-      }
-      if (selectedOption === 'any') {
-        return true;
-      }
-      break;
+        if (selectedOption === 'middle') {
+          return (object.offer.price < 10000 && object.offer.price < 50000);
+        }
+        if (selectedOption === 'low') {
+          return (object.offer.price <= 10000);
+        }
+        if (selectedOption === 'high') {
+          return (object.offer.price >= 50000);
+        }
+        if (selectedOption === 'any') {
+          return true;
+        }
+        break;
       case 'rooms':
-      return selectedOption === 'any' ? true : object.offer.rooms.toString() === selectedOption;
+        return selectedOption === 'any' ? true : object.offer.rooms.toString() === selectedOption;
       case 'guests':
-      return selectedOption === 'any' ? true : object.offer.guests.toString() === selectedOption;
+        return selectedOption === 'any' ? true : object.offer.guests.toString() === selectedOption;
     }
 
     return false;
   }
 
   formFilter.addEventListener('change', function () {
+
     window.debounce(function () {
       window.cardsUtils.closePopup();
       window.filterUtils.launchFilter();
     });
+
+
   });
 
 })();
