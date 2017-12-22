@@ -3,6 +3,7 @@
 (function () {
 
   var formFilter = document.querySelector('.map__filters');
+  var filtersCheckboxes = document.querySelectorAll('#housing-features input[type="checkbox"]');
 
   window.filterUtils = {
 
@@ -13,10 +14,10 @@
       var filtersSelects = document.querySelectorAll('.map__filters select');
 
       for (var i = 0; i < filtersSelects.length; i++) {
-
-        var nameSelect = filtersSelects[i].getAttribute('name').split('-')[1];
-        if (filtersSelects[i].nodeType === 1) {
-          arraySelects.push([nameSelect, filtersSelects[i].options[filtersSelects[i].selectedIndex].value]);
+        var  filtersSelect = filtersSelects[i];
+        var nameSelect = filtersSelect.getAttribute('name').split('-')[1];
+        if (filtersSelect.nodeType === 1) {
+          arraySelects.push([nameSelect, filtersSelect.options[filtersSelect.selectedIndex].value]);
         }
       }
 
@@ -26,8 +27,6 @@
     getCheckboxesFiltersList: function () {
 
       var arrayFeatures = [];
-
-      var filtersCheckboxes = document.querySelectorAll('#housing-features input[type="checkbox"]');
 
       for (var i = 0; i < filtersCheckboxes.length; i++) {
         if (filtersCheckboxes[i].checked) {
@@ -86,25 +85,25 @@
     var selectedOption = selectFilter[1];
     switch (selectName) {
       case 'type':
-        return selectedOption === 'any' ? true : object.offer.type === selectedOption;
+      return selectedOption === 'any' ? true : object.offer.type === selectedOption;
       case 'price':
-        if (selectedOption === 'middle') {
-          return (object.offer.price < 10000 && object.offer.price <= 50000);
-        }
-        if (selectedOption === 'low') {
-          return (object.offer.price <= 10000);
-        }
-        if (selectedOption === 'high') {
-          return (object.offer.price >= 50000);
-        }
-        if (selectedOption === 'any') {
-          return true;
-        }
-        break;
+      if (selectedOption === 'middle') {
+        return (object.offer.price < 10000 && object.offer.price <= 50000);
+      }
+      if (selectedOption === 'low') {
+        return (object.offer.price <= 10000);
+      }
+      if (selectedOption === 'high') {
+        return (object.offer.price >= 50000);
+      }
+      if (selectedOption === 'any') {
+        return true;
+      }
+      break;
       case 'rooms':
-        return selectedOption === 'any' ? true : object.offer.rooms.toString() === selectedOption;
+      return selectedOption === 'any' ? true : object.offer.rooms.toString() === selectedOption;
       case 'guests':
-        return selectedOption === 'any' ? true : object.offer.guests.toString() === selectedOption;
+      return selectedOption === 'any' ? true : object.offer.guests.toString() === selectedOption;
     }
 
     return false;
