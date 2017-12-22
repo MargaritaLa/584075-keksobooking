@@ -112,7 +112,7 @@
           window.synchronizeFields(target, MINPRICE, getMinPriceForObjectType);
           break;
         case 'rooms':
-          window.synchronizeFields(target, CAPACITY_NUMBER, syncDependentFields, capacityFields);
+          window.synchronizeFields(target, CAPACITY_NUMBER, syncDependentFields, capacityFields, nameSelect);
           break;
       }
 
@@ -128,5 +128,6 @@
     var arrayKeyValues = objectElement[key];
     dependentElement.value = objectElement[key] [window.utils.getRandomValue(0, arrayKeyValues.length - 1)];
   }
+
 
 })();

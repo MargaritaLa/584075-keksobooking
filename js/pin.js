@@ -12,7 +12,7 @@
     window.pinsUtils.renderPins(objectsArray);
   };
 
-  window.pinsUtils = { 
+  window.pinsUtils = {
 
     determineNumberOutputLabels: function (numberOutputLabels) {
 
@@ -28,7 +28,7 @@
       pinNode.setAttribute('data-objectId', id);
       fragment.appendChild(pinNode);
 
-    }, 
+    },
 
     /*  выводим все пины перед в блок .map__pins */
     renderPins: function (objectsArray) {
