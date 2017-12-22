@@ -54,25 +54,25 @@
 
       for (var i = 0; i < sourceObjects.length; i++) {
 
-        var object = sourceObjects[i];
+        var checkHousing = sourceObjects[i];
         var isSatisfyCheckboxFilters = true;
         var isSatisfySelectFilters = true;
 
         for (var checkboxFilterIdx = 0; checkboxFilterIdx < checkboxFilters.length; checkboxFilterIdx++) {
           var checkboxFilter = checkboxFilters[checkboxFilterIdx];
-          if (!object.offer.features.includes(checkboxFilter)) {
+          if (!checkHousing.offer.features.includes(checkboxFilter)) {
             isSatisfyCheckboxFilters = false;
             break;
           }
         }
 
         isSatisfySelectFilters = selectsFilters.every(function (selectFilter) {
-          var res = isSatisfySelectFilter(selectFilter, object);
+          var res = isSatisfySelectFilter(selectFilter, checkHousing);
           return res;
         });
 
         if (isSatisfyCheckboxFilters && isSatisfySelectFilters) {
-          filteredObjects.push(object);
+          filteredObjects.push(checkHousing);
         }
       }
 
