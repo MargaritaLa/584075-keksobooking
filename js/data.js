@@ -8,7 +8,7 @@
     window.data = {
       cardObjectsArray: downloadedObjects
     };
-	
+
     window.dataUtils.onDataLoadedCallback(downloadedObjects);
 
   };

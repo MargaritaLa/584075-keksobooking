@@ -25,7 +25,7 @@
 
       var pinObjectNode = mapPopupObjectTemplate.cloneNode(true);
       var popupClose = pinObjectNode.querySelector('.popup__close');
-	  
+
       pinObjectNode.querySelector('.popup__avatar').src = object.author.avatar;
       pinObjectNode.querySelector('h3').textContent = object.offer.title;
       pinObjectNode.querySelector('p small').textContent = object.offer.address;
@@ -40,16 +40,19 @@
         }
       });
 
+      var typeName = '';
+
       if (object.offer.type === 'flat') {
-        object.offer.type = 'Квартира';
+        typeName = 'Квартира';
       }
       if (object.offer.type === 'bungalo') {
-        object.offer.type = 'Бунгало';
+        typeName = 'Бунгало';
       }
       if (object.offer.type === 'house') {
-        object.offer.type = 'Дом';
+        typeName = 'Дом';
       }
-      pinObjectNode.querySelector('h4').textContent = object.offer.type;
+
+      pinObjectNode.querySelector('h4').textContent = typeName;
       pinObjectNode.querySelector('.capacity').textContent = object.offer.rooms + ' комнаты для ' + object.offer.guests + ' гостей';
       pinObjectNode.querySelector('.stay__time').textContent = 'Заезд после ' + object.offer.checkin + ', выезд до ' + object.offer.checkout;
       pinObjectNode.querySelector('.description').textContent = object.offer.description;
