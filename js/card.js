@@ -25,6 +25,7 @@
 
       var pinObjectNode = mapPopupObjectTemplate.cloneNode(true);
       var popupClose = pinObjectNode.querySelector('.popup__close');
+	  
       pinObjectNode.querySelector('.popup__avatar').src = object.author.avatar;
       pinObjectNode.querySelector('h3').textContent = object.offer.title;
       pinObjectNode.querySelector('p small').textContent = object.offer.address;

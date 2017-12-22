@@ -129,5 +129,4 @@
     dependentElement.value = objectElement[key] [window.utils.getRandomValue(0, arrayKeyValues.length - 1)];
   }
 
-
 })();

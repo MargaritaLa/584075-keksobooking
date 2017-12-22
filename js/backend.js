@@ -29,7 +29,6 @@
       if (error) {
         errorHandler(error);
       }
-
     });
 
     xhr.addEventListener('error', function () {
