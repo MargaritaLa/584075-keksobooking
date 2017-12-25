@@ -33,7 +33,7 @@
       var mapPinsObjectTemplate = document.querySelector('template').content.querySelector('.map__pin');
       var length = window.pinsUtils.determineNumberOutputLabels(objectsArray.length);
 
-      objectsArray.every(function(objectItem, i, objectsArray) {
+      objectsArray.every(function (objectItem, i) {
 
         if (i > length - 1) {
           return false;
@@ -71,7 +71,7 @@
     deleteActiveClass: function deleteActiveClass() {
 
       /* все пины */
-      mapPins.forEach(function(mapPinItem, i, mapPins) {
+      mapPins.forEach(function (mapPinItem) {
         mapPinItem.classList.remove('map__pin--active');
       });
 
@@ -85,7 +85,7 @@
         return;
       }
 
-      if(pin.classList.contains('map__pin--main')){
+      if (pin.classList.contains('map__pin--main')) {
 
         window.pinsUtils.deletePins();
         window.filterUtils.resetActiveFilterFields();
@@ -143,26 +143,23 @@
 
     deletePins: function () {
 
-      var needDelete = [];
       var pinsArray = Array.prototype.slice.call(containerForPin.childNodes);
       var ELEMENT_NODE = 1;
 
-      var doublesPinsArray = pinsArray.filter(function(pinItem) {
-        if (pinItem.nodeType === ELEMENT_NODE) {
-          return pinItem;
-        }
+      var doublesPinsArray = pinsArray.filter(function (pinItem) {
+        return pinItem.nodeType === ELEMENT_NODE;
       });
 
-      doublesPinsArray.forEach(function(pinItem, i, doublesPinsArray) {
+      doublesPinsArray.forEach(function (pinItem) {
         if (!pinItem.classList.contains('map__pin--main', 'map__pinsoverlay') && pinItem.classList.contains('map__pin')) {
-         pinItem.remove();
-       }
+          pinItem.remove();
+        }
 
-     });
+      });
 
     },
 
-    makeReclinabileLink: function() {
+    makeReclinabileLink: function () {
 
       var mainPin = document.querySelector('.map__pin--main');
 

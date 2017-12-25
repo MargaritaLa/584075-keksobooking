@@ -37,7 +37,7 @@
     /* дизаблим поля фильтра и формы*/
     changeStateFieldsForm: function changeStateFieldsForm(flag) {
       var matches = document.querySelectorAll('.map__filters select, .map__filters input, .form__element input, .form__element select, .form__element textarea, #avatar');
-      matches.forEach(function(matchesItem, i, matches) {
+      matches.forEach(function (matchesItem) {
         matchesItem.disabled = flag;
       });
     }
@@ -103,17 +103,17 @@
 
       switch (nameSelect) {
         case 'timein':
-        window.synchronizeFields(target, STAY_TIME, syncDependentFields, timeoutField);
-        break;
+          window.synchronizeFields(target, STAY_TIME, syncDependentFields, timeoutField);
+          break;
         case 'timeout':
-        window.synchronizeFields(target, STAY_TIME, syncDependentFields, timeinField);
-        break;
+          window.synchronizeFields(target, STAY_TIME, syncDependentFields, timeinField);
+          break;
         case 'type':
-        window.synchronizeFields(target, MINPRICE, getMinPriceForObjectType);
-        break;
+          window.synchronizeFields(target, MINPRICE, getMinPriceForObjectType);
+          break;
         case 'rooms':
-        window.synchronizeFields(target, CAPACITY_NUMBER, syncDependentFields, capacityFields);
-        break;
+          window.synchronizeFields(target, CAPACITY_NUMBER, syncDependentFields, capacityFields);
+          break;
       }
 
     }

@@ -64,8 +64,8 @@
       }
 
       var featuresArray = object.offer.features;
- 
-      featuresArray.forEach(function(featureItem, i, featuresArray) {
+
+      featuresArray.forEach(function (featureItem) {
         var featureId = featureItem;
         var elListFeatures = document.createElement('li');
         elListFeatures.classList.add('feature', 'feature--' + featureId);

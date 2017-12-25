@@ -16,7 +16,7 @@
 
       var filtersSelectsArray = document.querySelectorAll('.map__filters select');
 
-      filtersSelectsArray.forEach(function(filtersSelectItem, i, filtersSelectsArray) {
+      filtersSelectsArray.forEach(function (filtersSelectItem) {
 
         var nameSelect = filtersSelectItem.getAttribute('name').split('-')[1];
         var filtersSelect = filtersSelectItem;
@@ -33,13 +33,13 @@
     getCheckboxesFiltersList: function () {
 
       var arrayFeatures = [];
-      
-      filtersCheckboxes.forEach(function(filtersCheckboxItem, i, filtersCheckboxes) {
+
+      filtersCheckboxes.forEach(function (filtersCheckboxItem) {
 
         if (filtersCheckboxItem.checked) {
           arrayFeatures.push(filtersCheckboxItem.value);
         }
-      
+
       });
 
       return arrayFeatures;
@@ -54,7 +54,7 @@
 
       var checkboxFilters = window.filterUtils.getCheckboxesFiltersList();
 
-      sourceObjects.forEach(function(checkingHouse, i, sourceObjects) {
+      sourceObjects.forEach(function (checkingHouse) {
 
         var isSatisfyCheckboxFilters = true;
         var isSatisfySelectFilters = true;
@@ -84,31 +84,31 @@
 
     isSatisfySelectFilter: function (selectFilter, object) {
 
-    var selectName = selectFilter[0];
-    var selectedOption = selectFilter[1];
+      var selectName = selectFilter[0];
+      var selectedOption = selectFilter[1];
 
-    switch (selectName) {
-      case 'type':
-        return selectedOption === 'any' ? true : object.offer.type === selectedOption;
-      case 'price':
-        if (selectedOption === 'middle') {
-          return (object.offer.price > 10000 && object.offer.price < 50000);
-        }
-        if (selectedOption === 'low') {
-          return (object.offer.price <= 10000);
-        }
-        if (selectedOption === 'high') {
-          return (object.offer.price >= 50000);
-        }
-        if (selectedOption === 'any') {
-          return true;
-        }
-        break;
-      case 'rooms':
-        return selectedOption === 'any' ? true : object.offer.rooms.toString() === selectedOption;
-      case 'guests':
-        return selectedOption === 'any' ? true : object.offer.guests.toString() === selectedOption;
-    }
+      switch (selectName) {
+        case 'type':
+          return selectedOption === 'any' ? true : object.offer.type === selectedOption;
+        case 'price':
+          if (selectedOption === 'middle') {
+            return (object.offer.price > 10000 && object.offer.price < 50000);
+          }
+          if (selectedOption === 'low') {
+            return (object.offer.price <= 10000);
+          }
+          if (selectedOption === 'high') {
+            return (object.offer.price >= 50000);
+          }
+          if (selectedOption === 'any') {
+            return true;
+          }
+          break;
+        case 'rooms':
+          return selectedOption === 'any' ? true : object.offer.rooms.toString() === selectedOption;
+        case 'guests':
+          return selectedOption === 'any' ? true : object.offer.guests.toString() === selectedOption;
+      }
 
       return false;
     },
@@ -118,10 +118,6 @@
     }
 
   };
-
-
-
-
 
   formFilter.addEventListener('change', function () {
 
