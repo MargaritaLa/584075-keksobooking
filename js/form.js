@@ -36,10 +36,10 @@
   window.formUtils = {
     /* дизаблим поля фильтра и формы*/
     changeStateFieldsForm: function changeStateFieldsForm(flag) {
-      var matches = document.querySelectorAll('.map__filters select, .map__filters input, .form__element input, .form__element select, .form__element textarea ');
-      for (var i = 0; i < matches.length; i++) {
-        matches[i].disabled = flag;
-      }
+      var matches = document.querySelectorAll('.map__filters select, .map__filters input, .form__element input, .form__element select, .form__element textarea, #avatar');
+      matches.forEach(function(matchesItem, i, matches) {
+        matchesItem.disabled = flag;
+      });
     }
   };
 
@@ -93,9 +93,9 @@
   }
 
   /* синхронизация работы полей времени заезда-выезда  */
-  blockForm.addEventListener('change', function () {
+  blockForm.addEventListener('change', function (evt) {
 
-    var target = event.target;
+    var target = evt.target;
 
     if (target.tagName === 'SELECT') {
 
@@ -103,17 +103,17 @@
 
       switch (nameSelect) {
         case 'timein':
-          window.synchronizeFields(target, STAY_TIME, syncDependentFields, timeoutField);
-          break;
+        window.synchronizeFields(target, STAY_TIME, syncDependentFields, timeoutField);
+        break;
         case 'timeout':
-          window.synchronizeFields(target, STAY_TIME, syncDependentFields, timeinField);
-          break;
+        window.synchronizeFields(target, STAY_TIME, syncDependentFields, timeinField);
+        break;
         case 'type':
-          window.synchronizeFields(target, MINPRICE, getMinPriceForObjectType);
-          break;
+        window.synchronizeFields(target, MINPRICE, getMinPriceForObjectType);
+        break;
         case 'rooms':
-          window.synchronizeFields(target, CAPACITY_NUMBER, syncDependentFields, capacityFields, nameSelect);
-          break;
+        window.synchronizeFields(target, CAPACITY_NUMBER, syncDependentFields, capacityFields);
+        break;
       }
 
     }

@@ -14,18 +14,18 @@
 
       var arraySelects = [];
 
-      var filtersSelects = document.querySelectorAll('.map__filters select');
+      var filtersSelectsArray = document.querySelectorAll('.map__filters select');
 
-      for (var i = 0; i < filtersSelects.length; i++) {
+      filtersSelectsArray.forEach(function(filtersSelectItem, i, filtersSelectsArray) {
 
-        var nameSelect = filtersSelects[i].getAttribute('name').split('-')[1];
-        var filtersSelect = filtersSelects[i];
+        var nameSelect = filtersSelectItem.getAttribute('name').split('-')[1];
+        var filtersSelect = filtersSelectItem;
 
         if (filtersSelect.nodeType === 1) {
           arraySelects.push([nameSelect, filtersSelect.options[filtersSelect.selectedIndex].value]);
         }
 
-      }
+      });
 
       return arraySelects;
     },
@@ -33,12 +33,14 @@
     getCheckboxesFiltersList: function () {
 
       var arrayFeatures = [];
+      
+      filtersCheckboxes.forEach(function(filtersCheckboxItem, i, filtersCheckboxes) {
 
-      for (var i = 0; i < filtersCheckboxes.length; i++) {
-        if (filtersCheckboxes[i].checked) {
-          arrayFeatures.push(filtersCheckboxes[i].value);
+        if (filtersCheckboxItem.checked) {
+          arrayFeatures.push(filtersCheckboxItem.value);
         }
-      }
+      
+      });
 
       return arrayFeatures;
     },
@@ -52,45 +54,35 @@
 
       var checkboxFilters = window.filterUtils.getCheckboxesFiltersList();
 
-      for (var i = 0; i < sourceObjects.length; i++) {
+      sourceObjects.forEach(function(checkingHouse, i, sourceObjects) {
 
-        var checkingHouse = sourceObjects[i];
         var isSatisfyCheckboxFilters = true;
         var isSatisfySelectFilters = true;
 
-        // for (var checkboxFilterIdx = 0; checkboxFilterIdx < checkboxFilters.length; checkboxFilterIdx++) {
-        //   var checkboxFilter = checkboxFilters[checkboxFilterIdx];
-        //   if (!checkHousing.offer.features.includes(checkboxFilter)) {
-        //     isSatisfyCheckboxFilters = false;
-        //     break;
-        //   }
-        // }
-
         isSatisfyCheckboxFilters = checkboxFilters.every(function (checkboxFilter) {
-          return isSatisfyCheckboxFilter(checkboxFilter, checkingHouse);
+          return window.filterUtils.isSatisfyCheckboxFilter(checkboxFilter, checkingHouse);
         });
 
         isSatisfySelectFilters = selectsFilters.every(function (selectFilter) {
-          return isSatisfySelectFilter(selectFilter, checkingHouse);
+          return window.filterUtils.isSatisfySelectFilter(selectFilter, checkingHouse);
         });
 
         if (isSatisfyCheckboxFilters && isSatisfySelectFilters) {
           filteredObjects.push(checkingHouse);
         }
-      }
+
+      });
 
       window.pinsUtils.deletePins();
       window.pinsUtils.renderPins(filteredObjects);
 
-    }
+    },
 
-  };
+    isSatisfyCheckboxFilter: function (checkboxFilter, object) {
+      return object.offer.features.includes(checkboxFilter);
+    },
 
-  function isSatisfyCheckboxFilter(checkboxFilter, object) {
-    return object.offer.features.includes(checkboxFilter);
-  }
-
-  function isSatisfySelectFilter(selectFilter, object) {
+    isSatisfySelectFilter: function (selectFilter, object) {
 
     var selectName = selectFilter[0];
     var selectedOption = selectFilter[1];
@@ -118,8 +110,18 @@
         return selectedOption === 'any' ? true : object.offer.guests.toString() === selectedOption;
     }
 
-    return false;
-  }
+      return false;
+    },
+
+    resetActiveFilterFields: function () {
+      formFilter.reset();
+    }
+
+  };
+
+
+
+
 
   formFilter.addEventListener('change', function () {
 

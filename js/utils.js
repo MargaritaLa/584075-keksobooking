@@ -23,17 +23,8 @@
         nonRepeatingValuesArray.push(i);
       }
       return window.utils.shuffleArray(nonRepeatingValuesArray);
-    },
-
-    /* получение массива что есть в объекте wifi, parking и пр. */
-    getObjectFeatures: function getObjectFeatures(allFeatures) {
-      var objectFeatures = [];
-      allFeatures = window.utils.shuffleArray(allFeatures);
-      for (var i = 0; i < window.utils.getRandomValue(0, allFeatures.length); i++) {
-        objectFeatures.push(allFeatures[i]);
-      }
-      return objectFeatures;
     }
+
   };
 
 })();

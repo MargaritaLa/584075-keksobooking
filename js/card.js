@@ -29,7 +29,7 @@
       pinObjectNode.querySelector('.popup__avatar').src = object.author.avatar;
       pinObjectNode.querySelector('h3').textContent = object.offer.title;
       pinObjectNode.querySelector('p small').textContent = object.offer.address;
-      pinObjectNode.querySelector('.popup__price').innerHTML = object.offer.price + ' &#x20bd;/ночь';
+      pinObjectNode.querySelector('.popup__price').textContent = object.offer.price + ' &#x20bd;/ночь';
       popupClose.setAttribute('tabindex', '0');
 
       popupClose.addEventListener('click', window.cardsUtils.closePopup);
@@ -62,12 +62,15 @@
       while (el.lastChild) {
         el.removeChild(el.lastChild);
       }
-      for (var i = 0; i < object.offer.features.length; i++) {
-        var featureId = object.offer.features[i];
+
+      var featuresArray = object.offer.features;
+ 
+      featuresArray.forEach(function(featureItem, i, featuresArray) {
+        var featureId = featureItem;
         var elListFeatures = document.createElement('li');
         elListFeatures.classList.add('feature', 'feature--' + featureId);
         pinObjectNode.querySelector('.popup__features').appendChild(elListFeatures);
-      }
+      });
 
       return pinObjectNode;
 

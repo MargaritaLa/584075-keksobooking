@@ -15,6 +15,7 @@
 
   var onError = function (message) {
     var messageDialog = document.createElement('div');
+    window.pinsUtils.makeReclinabileLink();
     messageDialog.classList.add('messageError');
     messageDialog.textContent = message;
     document.body.insertAdjacentElement('afterbegin', messageDialog);

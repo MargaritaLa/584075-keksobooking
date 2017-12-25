@@ -8,9 +8,7 @@
       dependentFieldSecond = [];
     }
 
-    for (var i = 0; i <= dependentFieldFirst.length - 1; i++) {
-      synchronizationFields(dependentFieldFirst.value, dependentFieldSecond, ratioDependency);
-    }
+    synchronizationFields(dependentFieldFirst.value, dependentFieldSecond, ratioDependency);
 
   };
 
